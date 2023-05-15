@@ -20,13 +20,13 @@
 #include <Arduino.h>
 
 #include <aqi.h>
+#include <owa-icons.h>
 
 #include "_locale.h"
 #include "_strftime.h"
 #include "api_response.h"
 #include "config.h"
 #include "display_utils.h"
-#include "icons.h"
 
 /* Returns battery percentage, rounded to the nearest integer.
  * Takes a voltage and uses a pre-calculated polynomial to find an approximation

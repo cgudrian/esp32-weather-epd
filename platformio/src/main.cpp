@@ -22,14 +22,13 @@
 #include <time.h>
 #include <WiFi.h>
 #include <Wire.h>
+#include <owa-icons.h>
 
 #include "api_response.h"
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
-
-#include "icons.h"
 
 // too large to allocate locally on stack
 static owm_resp_onecall_t       owm_onecall;

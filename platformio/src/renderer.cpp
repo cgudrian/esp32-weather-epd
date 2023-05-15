@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <owa-icons.h>
+
 #include "_locale.h"
 #include "_strftime.h"
 #include "renderer.h"
@@ -25,9 +27,6 @@
 
 // fonts
 #include FONT_HEADER
-
-// icon header files
-#include "icons.h"
 
 #ifdef DISP_BW
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
