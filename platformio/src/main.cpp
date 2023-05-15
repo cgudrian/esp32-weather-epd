@@ -29,7 +29,7 @@
 #include "display_utils.h"
 #include "renderer.h"
 
-#include "icons/icons_196x196.h"
+#include "icons.h"
 
 // too large to allocate locally on stack
 static owm_resp_onecall_t       owm_onecall;
@@ -275,7 +275,7 @@ void setup()
     //       is not a number (NAN) then an error occured, a dash '-' will be
     //       displayed.
     if (isnan(inTemp) || isnan(inHumidity)) {
-      statusStr = "BME read failed";
+      statusStr = "BME Lesefehler";
       Serial.println(statusStr);
     }
     else
@@ -285,7 +285,7 @@ void setup()
   }
   else
   {
-    statusStr = "BME not found"; // check wiring
+    statusStr = "BME nicht gefunden"; // check wiring
     Serial.println(statusStr);
   }
 

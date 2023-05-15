@@ -26,14 +26,7 @@
 #include "api_response.h"
 #include "config.h"
 #include "display_utils.h"
-
-// icon header files
-#include "icons/icons_16x16.h"
-#include "icons/icons_24x24.h"
-#include "icons/icons_32x32.h"
-#include "icons/icons_48x48.h"
-#include "icons/icons_64x64.h"
-#include "icons/icons_196x196.h"
+#include "icons.h"
 
 /* Returns battery percentage, rounded to the nearest integer.
  * Takes a voltage and uses a pre-calculated polynomial to find an approximation
@@ -569,8 +562,8 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
   // always using the day icon for weather forecast
   // bool day = current.weather.icon.endsWith("d");
   bool cloudy = daily.clouds > 60.25; // partly cloudy / partly sunny
-  bool windy = (daily.wind_speed >= 32.2 /*m/s*/
-             || daily.wind_gust  >= 40.2 /*m/s*/);
+  bool windy = (daily.wind_speed >= 8.9 /*m/s*/
+             || daily.wind_gust  >= 11.2 /*m/s*/);
 
   switch (id)
   {
@@ -718,8 +711,8 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
   bool moon = (current.dt >= today.moonrise && current.dt < today.moonset)
            || (today.moonrise > today.moonset && current.dt >= today.moonrise);
   bool cloudy = current.clouds > 60.25; // partly cloudy / partly sunny
-  bool windy = (current.wind_speed >= 32.2 /*m/s*/
-             || current.wind_gust  >= 40.2 /*m/s*/);
+  bool windy = (current.wind_speed >= 8.9 /*m/s*/
+             || current.wind_gust  >= 11.2 /*m/s*/);
 
   switch (id)
   {

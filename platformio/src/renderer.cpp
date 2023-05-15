@@ -27,15 +27,7 @@
 #include FONT_HEADER
 
 // icon header files
-#include "icons/icons_16x16.h"
-#include "icons/icons_24x24.h"
-#include "icons/icons_32x32.h"
-#include "icons/icons_48x48.h"
-#include "icons/icons_64x64.h"
-#include "icons/icons_96x96.h"
-#include "icons/icons_128x128.h"
-#include "icons/icons_160x160.h"
-#include "icons/icons_196x196.h"
+#include "icons.h"
 
 #ifdef DISP_BW
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
@@ -935,9 +927,9 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   }
   dataStr = String(batPercent) + "% (" 
             + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
-  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
+  drawString(pos, DISP_HEIGHT - 2 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;
-  display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 2 - 17,
                              getBatBitmap24(batPercent), 24, 24, dataColor);
   pos -= sp + 9;
 
@@ -948,17 +940,17 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   {
     dataStr += " (" + String(rssi) + "dBm)";
   }
-  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
+  drawString(pos, DISP_HEIGHT - 2 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 19;
-  display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 2 - 13, getWiFiBitmap16(rssi),
                              16, 16, dataColor);
   pos -= sp + 8;
 
   // last refresh
   dataColor = GxEPD_BLACK;
-  drawString(pos, DISP_HEIGHT - 1 - 2, refreshTimeStr, RIGHT, dataColor);
+  drawString(pos, DISP_HEIGHT - 2 - 2, refreshTimeStr, RIGHT, dataColor);
   pos -= getStringWidth(refreshTimeStr) + 25;
-  display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 21, wi_refresh_32x32,
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 2 - 21, wi_refresh_32x32,
                              32, 32, dataColor);
   pos -= sp;
 
@@ -966,9 +958,9 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   dataColor = ACCENT_COLOR;
   if (!statusStr.isEmpty())
   {
-    drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT, dataColor);
+    drawString(pos, DISP_HEIGHT - 2 - 2, statusStr, RIGHT, dataColor);
     pos -= getStringWidth(statusStr) + 24;
-    display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, error_icon_24x24, 
+    display.drawInvertedBitmap(pos, DISP_HEIGHT - 2 - 18, error_icon_24x24, 
                                24, 24, dataColor);
   }
 
