@@ -1,7 +1,9 @@
 #ifndef ICONS_H
 #define ICONS_H
 
-#include <Arduino.h>
+#ifndef PROGMEM
+#define PROGMEM
+#endif
 
 extern const unsigned char air_filter_48x48[] PROGMEM;
 extern const unsigned char battery_0_bar_0deg_48x48[] PROGMEM;
