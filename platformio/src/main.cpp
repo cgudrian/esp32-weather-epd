@@ -117,7 +117,7 @@ void setup()
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings 
   // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
   double batteryVoltage = 
-            static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.5 / 2.0);
+            static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.3 / 2.0);
             // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
             // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
   Serial.println("Battery voltage: " + String(batteryVoltage,2));
@@ -304,6 +304,7 @@ void setup()
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
 #endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
+    Serial.println("page printed");
   } while (display.nextPage());
   display.powerOff();
 
