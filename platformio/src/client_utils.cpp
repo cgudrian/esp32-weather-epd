@@ -33,6 +33,7 @@
 // header files
 #include "_locale.h"
 #include "api_response.h"
+#include "api_deserializer.h"
 #include "aqi.h"
 #include "client_utils.h"
 #include "config.h"

@@ -27,6 +27,7 @@
 #define DISP_WIDTH  800
 #define DISP_HEIGHT 480
 
+#ifdef ARDUINO
 #ifdef DISP_BW
 #include <GxEPD2_BW.h>
 extern GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display;
@@ -34,6 +35,10 @@ extern GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display;
 #ifdef DISP_3C
 #include <GxEPD2_3C.h>
 extern GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display;
+#endif
+#else
+#include "display.h"
+extern Display display;
 #endif
 
 typedef enum alignment

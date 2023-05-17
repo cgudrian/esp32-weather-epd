@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <time.h>
+#include <WiFiType.h>
 #include "api_response.h"
 
 enum alert_category {

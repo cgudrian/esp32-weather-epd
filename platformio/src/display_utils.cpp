@@ -22,6 +22,9 @@
 #include <aqi.h>
 #include <owa-icons.h>
 
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+
 #include "_locale.h"
 #include "_strftime.h"
 #include "api_response.h"
@@ -41,9 +44,9 @@ int calcBatPercent(double v)
              + 7501.3202;
 
   // enforce bounds, 0-100
-  y = max(y, 0.0);
-  y = min(y, 100.0);
-  
+  y = std::max(y, 0.0);
+  y = std::min(y, 100.0);
+
   y = round(y);
   return static_cast<int>(y);
 } // end calcBatPercent

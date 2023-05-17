@@ -22,6 +22,7 @@
 #include <time.h>
 #include <WiFi.h>
 #include <Wire.h>
+#include <HTTPClient.h>
 #include <owa-icons.h>
 
 #include "api_response.h"

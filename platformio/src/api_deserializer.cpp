@@ -17,6 +17,9 @@
 
 #include <vector>
 #include <ArduinoJson.h>
+#include <WiFiClient.h>
+#include <HTTPClient.h>
+
 #include "api_response.h"
 
 DeserializationError deserializeOneCall(WiFiClient &json, 
