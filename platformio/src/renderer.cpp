@@ -518,7 +518,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     hiStr = String(static_cast<int>(round(daily[i].temp.max.in<UNITS_TEMP>()))) + "\xB0";
     loStr = String(static_cast<int>(round(daily[i].temp.min.in<UNITS_TEMP>()))) + "\xB0";
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
-    drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
+    drawString(x + 31 + 8, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
   }
 
   return;
