@@ -18,6 +18,8 @@
 #ifndef __API_RESPONSE_H__
 #define __API_RESPONSE_H__
 
+#include "quantities.h"
+
 #include <cstdint>
 #include <vector>
 #include <Arduino.h>
@@ -41,12 +43,12 @@ struct owm_weather_t
  */
 struct owm_temp_t
 {
-  float   morn;             // Morning temperature.
-  float   day;              // Day temperature.
-  float   eve;              // Evening temperature.
-  float   night;            // Night temperature.
-  float   min;              // Min daily temperature.
-  float   max;              // Max daily temperature.
+  Quantity<Kelvin> morn;             // Morning Quantity.
+  Quantity<Kelvin> day;              // Day Quantity.
+  Quantity<Kelvin> eve;              // Evening Quantity.
+  Quantity<Kelvin> night;            // Night Quantity.
+  Quantity<Kelvin> min;              // Min daily Quantity.
+  Quantity<Kelvin> max;              // Max daily Quantity.
 };
 
 /*
@@ -68,16 +70,16 @@ struct owm_current_t
   int64_t dt;               // Current time, Unix, UTC
   int64_t sunrise;          // Sunrise time, Unix, UTC
   int64_t sunset;           // Sunset time, Unix, UTC
-  float   temp;             // Temperature. Units - default: kelvin, metric: Celsius, imperial: Fahrenheit.
-  float   feels_like;       // Temperature. This temperature parameter accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+  Quantity<Kelvin> temp;             // Temperature. Units - default: kelvin, metric: Celsius, imperial: Fahrenheit.
+  Quantity<Kelvin> feels_like;       // Temperature. This temperature parameter accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     pressure;         // Atmospheric pressure on the sea level, hPa
   int     humidity;         // Humidity, %
   float   dew_point;        // Atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     clouds;           // Cloudiness, %
   float   uvi;              // Current UV index
-  int     visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
-  float   wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
-  float   wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+  Quantity<Meter> visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
+  Quantity<MetersPerSecond> wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+  Quantity<MetersPerSecond> wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   int     wind_deg;         // Wind direction, degrees (meteorological)
   float   rain_1h;          // (where available) Rain volume for last hour, mm
   float   snow_1h;          // (where available) Snow volume for last hour, mm
@@ -99,16 +101,16 @@ struct owm_minutely_t
 struct owm_hourly_t
 {
   int64_t dt;               // Time of the forecasted data, unix, UTC
-  float   temp;             // Temperature. Units - default: kelvin, metric: Celsius, imperial: Fahrenheit.
-  float   feels_like;       // Temperature. This temperature parameter accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+  Quantity<Kelvin> temp;             // Quantity. Units - default: kelvin, metric: Celsius, imperial: Fahrenheit.
+  Quantity<Kelvin> feels_like;       // Quantity. This Quantity parameter accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     pressure;         // Atmospheric pressure on the sea level, hPa
   int     humidity;         // Humidity, %
-  float   dew_point;        // Atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+  Quantity<Kelvin> dew_point;        // Atmospheric Quantity (varying according to pressure and humidity) below which water droplets begin to condense and dew can form. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     clouds;           // Cloudiness, %
   float   uvi;              // Current UV index
-  int     visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
-  float   wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
-  float   wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+  Quantity<Meter> visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
+  Quantity<MetersPerSecond> wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+  Quantity<MetersPerSecond> wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   int     wind_deg;         // Wind direction, degrees (meteorological)
   float   pop;              // Probability of precipitation. The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%
   float   rain_1h;          // (where available) Rain volume for last hour, mm
@@ -130,13 +132,13 @@ struct owm_daily_t
   owm_temp_t            temp;
   owm_feels_like_t      feels_like;
   int     pressure;         // Atmospheric pressure on the sea level, hPa
-  int     humidity;         // Humidity, %
+  Quantity<Kelvin> humidity;         // Humidity, %
   float   dew_point;        // Atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     clouds;           // Cloudiness, %
   float   uvi;              // Current UV index
   int     visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
-  float   wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
-  float   wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+  Quantity<MetersPerSecond> wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+  Quantity<MetersPerSecond> wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   int     wind_deg;         // Wind direction, degrees (meteorological)
   float   pop;              // Probability of precipitation. The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%
   float   rain;             // (where available) Precipitation volume, mm

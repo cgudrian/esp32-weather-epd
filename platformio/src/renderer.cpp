@@ -218,7 +218,7 @@ void initDisplay()
  */
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution,
-                           float inTemp, float inHumidity)
+                           std::optional<Quantity<Celsius>> inTemp, float inHumidity)
 {
   String dataStr, unitStr;
   // current weather icon
@@ -227,18 +227,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                              196, 196, GxEPD_BLACK);
 
   // current temp
-#ifdef UNITS_TEMP_KELVIN
-  dataStr = String(static_cast<int>(round(current.temp)));
-  unitStr = TXT_UNITS_TEMP_KELVIN;
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-  dataStr = String(static_cast<int>(round(kelvin_to_celsius(current.temp))));
+  dataStr = String(static_cast<int>(round(current.temp.in<UNITS_TEMP>())));
   unitStr = TXT_UNITS_TEMP_CELSIUS;
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-  dataStr = String(static_cast<int>(round(kelvin_to_fahrenheit(current.temp))));
-  unitStr = TXT_UNITS_TEMP_FAHRENHEIT;
-#endif
   // FONT_**_temperature fonts only have the character set used for displaying
   // temperature (0123456789.-\xB0)
   display.setFont(&FONT_48pt8b_temperature);
@@ -247,22 +237,9 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(display.getCursorX(), 196 / 2 - 69 / 2 + 20, unitStr, LEFT);
 
   // current feels like
-#ifdef UNITS_TEMP_KELVIN
   dataStr = String(TXT_FEELS_LIKE) + ' '
-            + String(static_cast<int>(round(current.feels_like)));
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-  dataStr = String(TXT_FEELS_LIKE) + ' '
-            + String(static_cast<int>(round(
-                     kelvin_to_celsius(current.feels_like))))
+            + String(static_cast<int>(round(current.feels_like.in<UNITS_TEMP>())))
             + '\xB0';
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-  dataStr = String(TXT_FEELS_LIKE) + ' '
-            + String(static_cast<int>(round(
-                     kelvin_to_fahrenheit(current.feels_like))))
-            + '\xB0';
-#endif
   display.setFont(&FONT_12pt8b);
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
 
@@ -316,34 +293,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1,
                              getWindBitmap24(current.wind_deg),
                              24, 24, GxEPD_BLACK);
-#ifdef UNITS_SPEED_METERSPERSECOND
-  dataStr = String(static_cast<int>(round(current.wind_speed)));
-  unitStr = TXT_UNITS_SPEED_METERSPERSECOND;
-#endif
-#ifdef UNITS_SPEED_FEETPERSECOND
-  dataStr = String(static_cast<int>(round(
-                   meterspersecond_to_feetpersecond(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_FEETPERSECOND;
-#endif
-#ifdef UNITS_SPEED_KILOMETERSPERHOUR
-  dataStr = String(static_cast<int>(round(
-                   meterspersecond_to_kilometersperhour(current.wind_speed) )));
+  dataStr = String(static_cast<int>(round(current.wind_speed.in<UNITS_SPEED>())));
   unitStr = TXT_UNITS_SPEED_KILOMETERSPERHOUR;
-#endif
-#ifdef UNITS_SPEED_MILESPERHOUR
-  dataStr = String(static_cast<int>(round(
-                   meterspersecond_to_milesperhour(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_MILESPERHOUR;
-#endif
-#ifdef UNITS_SPEED_KNOTS
-  dataStr = String(static_cast<int>(round(
-                   meterspersecond_to_knots(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_KNOTS;
-#endif
-#ifdef UNITS_SPEED_BEAUFORT
-  dataStr = String(meterspersecond_to_beaufort(current.wind_speed));
-  unitStr = TXT_UNITS_SPEED_BEAUFORT;
-#endif
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
@@ -415,25 +366,15 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // indoor temperature
   display.setFont(&FONT_12pt8b);
-  if (!isnan(inTemp))
+  if (inTemp)
   {
-#ifdef UNITS_TEMP_KELVIN
-    dataStr = String(static_cast<int>(round(celsius_to_kelvin(inTemp))));
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-    dataStr = String(static_cast<int>(round(inTemp)));
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-    dataStr = String(static_cast<int>(round(celsius_to_fahrenheit(inTemp))));
-#endif
+    dataStr = String(static_cast<int>(round(inTemp->val())));
   }
   else
   {
     dataStr = "--";
   }
-#if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
   dataStr += "\xB0";
-#endif
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 
   // sunset
@@ -503,7 +444,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // visibility
   display.setFont(&FONT_12pt8b);
 #ifdef UNITS_DIST_KILOMETERS
-  float vis = meters_to_kilometers(current.visibility);
+  float vis = current.visibility.in<Kilometer>();
   unitStr = TXT_UNITS_DIST_KILOMETERS;
 #endif
 #ifdef UNITS_DIST_MILES
@@ -574,22 +515,8 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     // high | low
     display.setFont(&FONT_8pt8b);
     drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
-#ifdef UNITS_TEMP_KELVIN
-  hiStr = String(static_cast<int>(round(daily[i].temp.max)));
-  loStr = String(static_cast<int>(round(daily[i].temp.min)));
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-  hiStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.max)
-                 ))) + "\xB0";
-  loStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.min)
-                 ))) + "\xB0";
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-  hiStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.max)
-                 ))) + "\xB0";
-  loStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.min)
-                 ))) + "\xB0";
-#endif
+    hiStr = String(static_cast<int>(round(daily[i].temp.max.in<UNITS_TEMP>()))) + "\xB0";
+    loStr = String(static_cast<int>(round(daily[i].temp.min.in<UNITS_TEMP>()))) + "\xB0";
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
   }
@@ -737,29 +664,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
   // calculate y max/min and intervals
   int yMajorTicks = 5;
-#ifdef UNITS_TEMP_KELVIN
-  float tempMin = hourly[0].temp;
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-  float tempMin = kelvin_to_celsius(hourly[0].temp);
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-  float tempMin = kelvin_to_fahrenheit(hourly[0].temp);
-#endif
+  float tempMin = hourly[0].temp.in<UNITS_TEMP>();
   float tempMax = tempMin;
   int yTempMajorTicks = 5;
   float newTemp = 0;
   for (int i = 1; i < HOURLY_GRAPH_MAX; ++i)
   {
-#ifdef UNITS_TEMP_KELVIN
-    newTemp = hourly[i].temp;
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-    newTemp = kelvin_to_celsius(hourly[i].temp);
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-    newTemp = kelvin_to_fahrenheit(hourly[i].temp);
-#endif
+    newTemp = hourly[i].temp.in<UNITS_TEMP>();
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
   }
@@ -800,9 +711,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     display.setFont(&FONT_8pt8b);
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
-#if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
     dataStr += "\xB0";
-#endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
     // PoP
@@ -841,28 +750,10 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                                     + (0.5 * xInterval) ));
       yPxPerUnit = (yPos1 - yPos0)
                    / static_cast<float>(tempBoundMax - tempBoundMin);
-#ifdef UNITS_TEMP_KELVIN
-      y0_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * ((hourly[i - 1].temp) - tempBoundMin)) ));
-      y1_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * ((hourly[i    ].temp) - tempBoundMin)) ));
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-      y0_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i - 1].temp)
-                         - tempBoundMin)) ));
-      y1_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i    ].temp)
-                         - tempBoundMin)) ));
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-      y0_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * (kelvin_to_fahrenheit(hourly[i - 1].temp)
-                         - tempBoundMin)) ));
-      y1_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * (kelvin_to_fahrenheit(hourly[i    ].temp)
-                         - tempBoundMin)) ));
-#endif
+      y0_t = static_cast<int>(
+          round(yPos1 - (yPxPerUnit * (hourly[i - 1].temp.in<UNITS_TEMP>()) - tempBoundMin)));
+      y1_t = static_cast<int>(
+          round(yPos1 - (yPxPerUnit * (hourly[i].temp.in<UNITS_TEMP>()) - tempBoundMin)));
 
       // graph temperature
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);

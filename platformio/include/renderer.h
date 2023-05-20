@@ -19,6 +19,7 @@
 #define __RENDERER_H__
 
 #include <vector>
+#include <optional>
 #include <Arduino.h>
 #include <time.h>
 #include "api_response.h"
@@ -57,8 +58,8 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
                        int16_t line_spacing, uint16_t color=GxEPD_BLACK);
 void initDisplay();
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
-                           owm_resp_air_pollution_t &owm_air_pollution, 
-                           float inTemp, float inHumidity);
+                           owm_resp_air_pollution_t &owm_air_pollution,
+                           std::optional<Quantity<Celsius> > inTemp, float inHumidity);
 void drawForecast(owm_daily_t *const daily, tm timeInfo);
 void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);

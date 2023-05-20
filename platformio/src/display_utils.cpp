@@ -565,8 +565,8 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
   // always using the day icon for weather forecast
   // bool day = current.weather.icon.endsWith("d");
   bool cloudy = daily.clouds > 60.25; // partly cloudy / partly sunny
-  bool windy = (daily.wind_speed >= 8.9 /*m/s*/
-             || daily.wind_gust  >= 11.2 /*m/s*/);
+  bool windy = (daily.wind_speed.in<MetersPerSecond>() >= 8.9 /*m/s*/
+                || daily.wind_gust.in<MetersPerSecond>() >= 11.2 /*m/s*/);
 
   switch (id)
   {
@@ -714,8 +714,8 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
   bool moon = (current.dt >= today.moonrise && current.dt < today.moonset)
            || (today.moonrise > today.moonset && current.dt >= today.moonrise);
   bool cloudy = current.clouds > 60.25; // partly cloudy / partly sunny
-  bool windy = (current.wind_speed >= 8.9 /*m/s*/
-             || current.wind_gust  >= 11.2 /*m/s*/);
+  bool windy = (current.wind_speed.in<MetersPerSecond>() >= 8.9 /*m/s*/
+                || current.wind_gust.in<MetersPerSecond>() >= 11.2 /*m/s*/);
 
   switch (id)
   {

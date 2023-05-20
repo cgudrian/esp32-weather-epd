@@ -19,54 +19,6 @@
 
 #include <cmath>
 
-float kelvin_to_celsius(float kelvin)
-{
-  return kelvin - 273.15f;
-} // end kelvin_to_celsius
-
-float kelvin_to_fahrenheit(float kelvin)
-{
-  return kelvin * (9.f / 5.f) - 459.67f;
-} // end kelvin_to_fahrenheit
-
-float celsius_to_kelvin(float celsius)
-{
-  return celsius + 273.15f;
-} // end celsius_to_kelvin
-
-float celsius_to_fahrenheit(float celsius)
-{
-  return celsius * (9.f / 5.f) + 32.f;
-} // end celsius_to_fahrenheit
-
-float meterspersecond_to_feetpersecond(float meterspersecond)
-{
-  return meterspersecond * 3.281f;
-} // end meterspersecond_to_feetpersecond
-
-float meterspersecond_to_kilometersperhour(float meterspersecond)
-{
-  return meterspersecond * 3.6f;
-} // end meterspersecond_to_kilometersperhour
-
-float meterspersecond_to_milesperhour(float meterspersecond)
-{
-  return meterspersecond * 2.237f;
-} // end meterspersecond_to_milesperhour
-
-float meterspersecond_to_knots(float meterspersecond)
-{
-  return meterspersecond * 1.944f;
-} // end meterspersecond_to_knots
-
-int meterspersecond_to_beaufort(float meterspersecond)
-{
-  int beaufort = (int) ((powf( 1 / 0.836f, 2.f/3.f) 
-                         * powf(meterspersecond, 2.f/3.f))
-                        + .5f);
-  return beaufort > 12 ? 12 : beaufort;
-} // end meterspersecond_to_beaufort
-
 float hectopascals_to_pascals(float hectopascals)
 {
   return hectopascals * 100.f;
