@@ -1,0 +1,12 @@
+#pragma once
+
+enum wl_status_t {
+    WL_NO_SHIELD,
+    WL_IDLE_STATUS,
+    WL_NO_SSID_AVAIL,
+    WL_SCAN_COMPLETED,
+    WL_CONNECTED,
+    WL_CONNECT_FAILED,
+    WL_CONNECTION_LOST,
+    WL_DISCONNECTED,
+};
