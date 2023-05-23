@@ -148,6 +148,11 @@ inline int toLowerCase(int c)
 }
 
 #define PROGMEM
-#define A0 0
+
+enum {
+    A0,
+    A1,
+    A2,
+};
 
 #endif // ARDUINO_H

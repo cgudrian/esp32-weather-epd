@@ -54,19 +54,17 @@
 // UNITS - TEMPERATURE
 //   Metric   : Celsius
 //   Imperial : Fahrenheit
-// #define UNITS_TEMP_KELVIN
-// #define UNITS_TEMP_CELSIUS
-#define UNITS_TEMP_FAHRENHEIT
+// #define UNITS_TEMP Kelvin
+// #define UNITS_TEMP Celsius
+#define UNITS_TEMP Celsius
 
 // UNITS - WIND SPEED
 //   Metric   : Kilometers per Hour
 //   Imperial : Miles per Hour
-// #define UNITS_SPEED_METERSPERSECOND
-// #define UNITS_SPEED_FEETPERSECOND
-// #define UNITS_SPEED_KILOMETERSPERHOUR
-#define UNITS_SPEED_MILESPERHOUR
-// #define UNITS_SPEED_KNOTS
-// #define UNITS_SPEED_BEAUFORT
+// #define UNITS_SPEED Beaufort
+// #define UNITS_SPEED MetersPerHour
+// #define UNITS_SPEED KilometersPerHour
+#define UNITS_SPEED KilometersPerHour
 
 // UNITS - PRESSURE
 //   Metric   : Millibars
@@ -83,8 +81,8 @@
 // UNITS - VISIBILITY DISTANCE
 //   Metric   : Kilometers
 //   Imperial : Miles
-// #define UNITS_DIST_KILOMETERS
-#define UNITS_DIST_MILES
+// #define UNITS_DIST Kilometers
+#define UNITS_DIST Kilometers
 
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).

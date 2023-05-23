@@ -227,8 +227,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                              196, 196, GxEPD_BLACK);
 
   // current temp
-  dataStr = String(static_cast<int>(round(current.temp.in<UNITS_TEMP>())));
-  unitStr = TXT_UNITS_TEMP_CELSIUS;
+  dataStr = String(static_cast<int>(round(current.temp.in<TemperatureUnit>())));
+  unitStr = TemperatureUnit::symbol();
   // FONT_**_temperature fonts only have the character set used for displaying
   // temperature (0123456789.-\xB0)
   display.setFont(&FONT_48pt8b_temperature);
@@ -238,7 +238,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // current feels like
   dataStr = String(TXT_FEELS_LIKE) + ' '
-            + String(static_cast<int>(round(current.feels_like.in<UNITS_TEMP>())))
+            + String(static_cast<int>(round(current.feels_like.in<TemperatureUnit>())))
             + '\xB0';
   display.setFont(&FONT_12pt8b);
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
@@ -293,8 +293,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1,
                              getWindBitmap24(current.wind_deg),
                              24, 24, GxEPD_BLACK);
-  dataStr = String(static_cast<int>(round(current.wind_speed.in<UNITS_SPEED>())));
-  unitStr = TXT_UNITS_SPEED_KILOMETERSPERHOUR;
+  dataStr = String(static_cast<int>(round(current.wind_speed.in<SpeedUnit>())));
+  unitStr = SpeedUnit::symbol();
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
@@ -374,7 +374,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   {
     dataStr = "--";
   }
-  dataStr += "\xB0";
+  dataStr += DEG;
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 
   // sunset
@@ -443,14 +443,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // visibility
   display.setFont(&FONT_12pt8b);
-#ifdef UNITS_DIST_KILOMETERS
-  float vis = current.visibility.in<Kilometer>();
-  unitStr = TXT_UNITS_DIST_KILOMETERS;
-#endif
-#ifdef UNITS_DIST_MILES
-  float vis = meters_to_miles(current.visibility);
-  unitStr = TXT_UNITS_DIST_MILES;
-#endif
+  float vis = current.visibility.in<DistanceUnit>();
+  unitStr = DistanceUnit::symbol();
   // if visibility is less than 1.95, round to 1 decimal place
   // else round to int
   if (vis < 1.95)
@@ -461,12 +455,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   {
     dataStr = String(static_cast<int>(round(vis)));
   }
-#ifdef UNITS_DIST_KILOMETERS
-  if (vis >= 10) {
-#endif
-#ifdef UNITS_DIST_MILES
-  if (vis >= 6) {
-#endif
+  if (vis >= DistanceUnit::maxVisibility) {
     dataStr = "> " + dataStr;
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
@@ -515,8 +504,8 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     // high | low
     display.setFont(&FONT_8pt8b);
     drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
-    hiStr = String(static_cast<int>(round(daily[i].temp.max.in<UNITS_TEMP>()))) + "\xB0";
-    loStr = String(static_cast<int>(round(daily[i].temp.min.in<UNITS_TEMP>()))) + "\xB0";
+    hiStr = String(static_cast<int>(round(daily[i].temp.max.in<TemperatureUnit>()))) + DEG;
+    loStr = String(static_cast<int>(round(daily[i].temp.min.in<TemperatureUnit>()))) + DEG;
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 8, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
   }
@@ -664,13 +653,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
   // calculate y max/min and intervals
   int yMajorTicks = 5;
-  float tempMin = hourly[0].temp.in<UNITS_TEMP>();
+  float tempMin = hourly[0].temp.in<TemperatureUnit>();
   float tempMax = tempMin;
   int yTempMajorTicks = 5;
   float newTemp = 0;
   for (int i = 1; i < HOURLY_GRAPH_MAX; ++i)
   {
-    newTemp = hourly[i].temp.in<UNITS_TEMP>();
+    newTemp = hourly[i].temp.in<TemperatureUnit>();
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
   }
@@ -711,7 +700,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     display.setFont(&FONT_8pt8b);
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
-    dataStr += "\xB0";
+    dataStr += DEG;
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
     // PoP
@@ -751,9 +740,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       yPxPerUnit = (yPos1 - yPos0)
                    / static_cast<float>(tempBoundMax - tempBoundMin);
       y0_t = static_cast<int>(
-          round(yPos1 - (yPxPerUnit * (hourly[i - 1].temp.in<UNITS_TEMP>()) - tempBoundMin)));
+          round(yPos1 - (yPxPerUnit * (hourly[i - 1].temp.in<TemperatureUnit>()) - tempBoundMin)));
       y1_t = static_cast<int>(
-          round(yPos1 - (yPxPerUnit * (hourly[i].temp.in<UNITS_TEMP>()) - tempBoundMin)));
+          round(yPos1 - (yPxPerUnit * (hourly[i].temp.in<TemperatureUnit>()) - tempBoundMin)));
 
       // graph temperature
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);

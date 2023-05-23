@@ -77,7 +77,7 @@ struct owm_current_t
   float   dew_point;        // Atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     clouds;           // Cloudiness, %
   float   uvi;              // Current UV index
-  Quantity<Meter> visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
+  Quantity<Meters> visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
   Quantity<MetersPerSecond> wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   Quantity<MetersPerSecond> wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   int     wind_deg;         // Wind direction, degrees (meteorological)
@@ -108,7 +108,7 @@ struct owm_hourly_t
   Quantity<Kelvin> dew_point;        // Atmospheric Quantity (varying according to pressure and humidity) below which water droplets begin to condense and dew can form. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
   int     clouds;           // Cloudiness, %
   float   uvi;              // Current UV index
-  Quantity<Meter> visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
+  Quantity<Meters> visibility;       // Average visibility, metres. The maximum value of the visibility is 10km
   Quantity<MetersPerSecond> wind_speed;       // Wind speed. Wind speed. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   Quantity<MetersPerSecond> wind_gust;        // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
   int     wind_deg;         // Wind direction, degrees (meteorological)

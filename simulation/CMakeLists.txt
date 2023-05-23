@@ -22,12 +22,15 @@ qt_add_executable(appWeatherStation
     display.h display.cpp
     displayimageprovider.h displayimageprovider.cpp
     adafruitfont.cpp
-    ${PIO_ROOT}/src/locales/locale_de_DE.cpp
-    ${PIO_ROOT}/src/conversions.cpp
     ${PIO_ROOT}/src/_strftime.cpp
-    ${PIO_ROOT}/src/display_utils.cpp
-    ${PIO_ROOT}/src/renderer.cpp
     ${PIO_ROOT}/src/config.cpp
+    ${PIO_ROOT}/src/conversions.cpp
+    ${PIO_ROOT}/src/display_utils.cpp
+    ${PIO_ROOT}/src/locales/locale_de_DE.cpp
+    ${PIO_ROOT}/src/locales/locale_en_GB.cpp
+    ${PIO_ROOT}/src/locales/locale_en_US.cpp
+    ${PIO_ROOT}/src/locales/locale_nl_BE.cpp
+    ${PIO_ROOT}/src/renderer.cpp
 )
 
 qt_add_qml_module(appWeatherStation

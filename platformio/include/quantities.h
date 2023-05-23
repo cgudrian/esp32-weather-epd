@@ -2,6 +2,10 @@
 
 #include <cmath>
 
+#include "config.h"
+
+#define DEG "\xB0"
+
 struct Kelvin
 {
     static const char *const symbol() { return "K"; }
@@ -11,30 +15,40 @@ struct Kelvin
 
 struct Celsius
 {
-    static const char *const symbol() { return "°C"; }
+    static const char *const symbol() { return DEG "C"; }
     static constexpr float factor{1};
     static constexpr float offset{-273.15};
 };
 
 struct Fahrenheit
 {
-    static const char *const symbol() { return "°F"; }
+    static const char *const symbol() { return DEG "F"; }
     static constexpr float factor{9.0 / 5.0};
     static constexpr float offset{-459.67};
 };
 
-struct Meter
+struct Meters
 {
     static const char *const symbol() { return "m"; }
     static constexpr float factor{1};
     static constexpr float offset{0};
+    static constexpr float maxVisibility{10000.0};
 };
 
-struct Kilometer
+struct Kilometers
 {
     static const char *const symbol() { return "km"; }
-    static constexpr float factor{0.001};
+    static constexpr float factor{1 / 1000.0};
     static constexpr float offset{0};
+    static constexpr float maxVisibility{10.0};
+};
+
+struct Miles
+{
+    static const char *symbol() { return "mi"; }
+    static constexpr float factor{1 / 1609.344};
+    static constexpr float offset{0};
+    static constexpr float maxVisibility{6.0};
 };
 
 struct MetersPerSecond
@@ -48,6 +62,13 @@ struct KilometersPerHour
 {
     static const char *const symbol() { return "km/h"; }
     static constexpr float factor{3.6};
+    static constexpr float offset{0};
+};
+
+struct MilesPerHour
+{
+    static const char *const symbol() { return "mi/h"; }
+    static constexpr float factor{3.6 / 1.609344};
     static constexpr float offset{0};
 };
 
@@ -122,3 +143,7 @@ struct Quantity
 protected:
     float _val;
 };
+
+using TemperatureUnit = UNITS_TEMP;
+using DistanceUnit = UNITS_DIST;
+using SpeedUnit = UNITS_SPEED;
