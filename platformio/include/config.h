@@ -60,7 +60,7 @@
 // #define UNITS_SPEED Beaufort
 // #define UNITS_SPEED MetersPerHour
 // #define UNITS_SPEED KilometersPerHour
-#define UNITS_SPEED KilometersPerHour
+#define UNITS_SPEED MilesPerHour
 
 // UNITS - PRESSURE
 //   Metric   : Millibars
@@ -78,7 +78,7 @@
 //   Metric   : Kilometers
 //   Imperial : Miles
 // #define UNITS_DIST Kilometers
-#define UNITS_DIST Kilometers
+#define UNITS_DIST Miles
 
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
