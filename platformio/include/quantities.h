@@ -8,28 +8,31 @@
 
 struct Kelvin
 {
-    static const char *const symbol() { return "K"; }
+    static constexpr const char *const symbol{"K"};
+    static constexpr const char *const shortSym{"K"};
     static constexpr float factor{1};
     static constexpr float offset{0};
 };
 
 struct Celsius
 {
-    static const char *const symbol() { return DEG "C"; }
+    static constexpr const char * const symbol{DEG "C"};
+    static constexpr const char *const shortSym{DEG};
     static constexpr float factor{1};
     static constexpr float offset{-273.15};
 };
 
 struct Fahrenheit
 {
-    static const char *const symbol() { return DEG "F"; }
+    static constexpr const char * const symbol{DEG "F"};
+    static constexpr const char *const shortSym{DEG};
     static constexpr float factor{9.0 / 5.0};
     static constexpr float offset{-459.67};
 };
 
 struct Meters
 {
-    static const char *const symbol() { return "m"; }
+    static constexpr const char * const symbol{"m"};
     static constexpr float factor{1};
     static constexpr float offset{0};
     static constexpr float maxVisibility{10000.0};
@@ -37,7 +40,7 @@ struct Meters
 
 struct Kilometers
 {
-    static const char *const symbol() { return "km"; }
+    static constexpr const char * const symbol{"km"};
     static constexpr float factor{1 / 1000.0};
     static constexpr float offset{0};
     static constexpr float maxVisibility{10.0};
@@ -45,7 +48,7 @@ struct Kilometers
 
 struct Miles
 {
-    static const char *symbol() { return "mi"; }
+    static constexpr const char * const symbol{"mi"};
     static constexpr float factor{1 / 1609.344};
     static constexpr float offset{0};
     static constexpr float maxVisibility{6.0};
@@ -53,21 +56,21 @@ struct Miles
 
 struct MetersPerSecond
 {
-    static const char *const symbol() { return "m/s"; }
+    static constexpr const char * const symbol{"m/s"};
     static constexpr float factor{1};
     static constexpr float offset{0};
 };
 
 struct KilometersPerHour
 {
-    static const char *const symbol() { return "km/h"; }
+    static constexpr const char * const symbol{"km/h"};
     static constexpr float factor{3.6};
     static constexpr float offset{0};
 };
 
 struct MilesPerHour
 {
-    static const char *const symbol() { return "mi/h"; }
+    static constexpr const char * const symbol{"mph"};
     static constexpr float factor{3.6 / 1.609344};
     static constexpr float offset{0};
 };

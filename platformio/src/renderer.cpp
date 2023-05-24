@@ -232,7 +232,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // current temp
   dataStr = String(static_cast<int>(round(current.temp.in<TemperatureUnit>())));
-  unitStr = TemperatureUnit::symbol();
+  unitStr = TemperatureUnit::symbol;
   // FONT_**_temperature fonts only have the character set used for displaying
   // temperature (0123456789.-\xB0)
   display.setFont(&FONT_48pt8b_temperature);
@@ -243,7 +243,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // current feels like
   dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(round(current.feels_like.in<TemperatureUnit>())))
-            + '\xB0';
+            + TemperatureUnit::shortSym;
   display.setFont(&FONT_12pt8b);
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
 
@@ -298,7 +298,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                              getWindBitmap24(current.wind_deg),
                              24, 24, GxEPD_BLACK);
   dataStr = String(static_cast<int>(round(current.wind_speed.in<SpeedUnit>())));
-  unitStr = SpeedUnit::symbol();
+  unitStr = SpeedUnit::symbol;
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
@@ -378,7 +378,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   {
     dataStr = "--";
   }
-  dataStr += DEG;
+  dataStr += TemperatureUnit::shortSym;
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 
   // sunset
@@ -448,7 +448,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // visibility
   display.setFont(&FONT_12pt8b);
   float vis = current.visibility.in<DistanceUnit>();
-  unitStr = DistanceUnit::symbol();
+  unitStr = DistanceUnit::symbol;
   // if visibility is less than 1.95, round to 1 decimal place
   // else round to int
   if (vis < 1.95)
@@ -508,8 +508,8 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     // high | low
     display.setFont(&FONT_8pt8b);
     drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
-    hiStr = String(static_cast<int>(round(daily[i].temp.max.in<TemperatureUnit>()))) + DEG;
-    loStr = String(static_cast<int>(round(daily[i].temp.min.in<TemperatureUnit>()))) + DEG;
+    hiStr = String(static_cast<int>(round(daily[i].temp.max.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
+    loStr = String(static_cast<int>(round(daily[i].temp.min.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 8, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
   }
@@ -706,7 +706,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     display.setFont(&FONT_8pt8b);
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
-    dataStr += DEG;
+    dataStr += TemperatureUnit::shortSym;
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
     // PoP
