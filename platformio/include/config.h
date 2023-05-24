@@ -56,7 +56,7 @@
 //   Imperial : Fahrenheit
 // #define UNITS_TEMP Kelvin
 // #define UNITS_TEMP Celsius
-#define UNITS_TEMP Celsius
+#define UNITS_TEMP Fahrenheit
 
 // UNITS - WIND SPEED
 //   Metric   : Kilometers per Hour
