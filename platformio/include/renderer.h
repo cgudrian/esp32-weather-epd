@@ -59,7 +59,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
 void initDisplay();
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution,
-                           std::optional<Quantity<Celsius> > inTemp, float inHumidity);
+                           std::optional<Quantity<TemperatureUnit> > inTemp, float inHumidity);
 void drawForecast(owm_daily_t *const daily, tm timeInfo);
 void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);
