@@ -42,6 +42,7 @@ qt_add_qml_module(appWeatherStation
 target_compile_definitions(appWeatherStation
     PRIVATE
     SIMULATION
+    ACCENT_COLOR=GxEPD_RED
 )
 
 set_target_properties(appWeatherStation PROPERTIES
