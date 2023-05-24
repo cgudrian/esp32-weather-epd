@@ -25,6 +25,10 @@
 #include "conversions.h"
 #include "display_utils.h"
 
+#ifdef SIMULATION
+#include <QDebug>
+#endif
+
 // fonts
 #include FONT_HEADER
 
