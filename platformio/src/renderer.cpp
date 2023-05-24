@@ -661,16 +661,16 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   float tempMax = tempMin;
   int yTempMajorTicks = 5;
   float newTemp = 0;
+
   for (int i = 1; i < HOURLY_GRAPH_MAX; ++i)
   {
     newTemp = hourly[i].temp.in<TemperatureUnit>();
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
   }
-  int tempBoundMin = static_cast<int>(tempMin - 1)
-                      - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
-  int tempBoundMax = static_cast<int>(tempMax + 1)
-   + (yTempMajorTicks - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
+
+  int tempBoundMin = static_cast<int>(tempMin - 1) - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
+  int tempBoundMax = static_cast<int>(tempMax + 1) + (yTempMajorTicks - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
 
   // while we have to many major ticks then increase the step
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yMajorTicks)
@@ -681,6 +681,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempBoundMax = static_cast<int>(tempMax + 1) + (yTempMajorTicks
                       - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
   }
+
   // while we have not enough major ticks add to either bound
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks < yMajorTicks)
   {
@@ -697,6 +698,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
   // draw y axis
   float yInterval = (yPos1 - yPos0) / static_cast<float>(yMajorTicks);
+
   for (int i = 0; i <= yMajorTicks; ++i)
   {
     String dataStr;
@@ -728,25 +730,25 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                                            / static_cast<float>(xMaxTicks)));
   float xInterval = (xPos1 - xPos0 - 1) / static_cast<float>(HOURLY_GRAPH_MAX);
   display.setFont(&FONT_8pt8b);
+
+  const float yPxPerUnit_t = (yPos1 - yPos0) / static_cast<float>(tempBoundMax - tempBoundMin);
+  const float yPxPerUnit_p = (yPos1 - yPos0) / 100.0;
+
   for (int i = 0; i < HOURLY_GRAPH_MAX; ++i)
   {
     int xTick = static_cast<int>(xPos0 + (i * xInterval));
     int x0_t, x1_t, y0_t, y1_t;
-    float yPxPerUnit;
 
     if (i > 0)
     {
       // temperature
-      x0_t = static_cast<int>(round(xPos0 + ((i - 1) * xInterval)
-                                    + (0.5 * xInterval) ));
-      x1_t = static_cast<int>(round(xPos0 + (i * xInterval)
-                                    + (0.5 * xInterval) ));
-      yPxPerUnit = (yPos1 - yPos0)
-                   / static_cast<float>(tempBoundMax - tempBoundMin);
-      y0_t = static_cast<int>(
-          round(yPos1 - (yPxPerUnit * (hourly[i - 1].temp.in<TemperatureUnit>()) - tempBoundMin)));
-      y1_t = static_cast<int>(
-          round(yPos1 - (yPxPerUnit * (hourly[i].temp.in<TemperatureUnit>()) - tempBoundMin)));
+      x0_t = static_cast<int>(round(xPos0 + ((i - 1) * xInterval) + (0.5 * xInterval)));
+      x1_t = static_cast<int>(round(xPos0 + (i * xInterval) + (0.5 * xInterval)));
+
+      auto prevTemp = hourly[i - 1].temp.in<TemperatureUnit>();
+      auto currTemp = hourly[i].temp.in<TemperatureUnit>();
+      y0_t = static_cast<int>(round(yPos1 - yPxPerUnit_t * (prevTemp - tempBoundMin)));
+      y1_t = static_cast<int>(round(yPos1 - yPxPerUnit_t * (currTemp - tempBoundMin)));
 
       // graph temperature
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);
@@ -757,9 +759,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     // PoP
     x0_t = static_cast<int>(round( xPos0 + 1 + (i * xInterval)));
     x1_t = static_cast<int>(round( xPos0 + 1 + ((i + 1) * xInterval) ));
-    yPxPerUnit = (yPos1 - yPos0) / 100.0;
     y0_t = static_cast<int>(round(
-                            yPos1 - (yPxPerUnit * (hourly[i    ].pop * 100)) ));
+                            yPos1 - (yPxPerUnit_p * (hourly[i].pop * 100)) ));
     y1_t = yPos1;
 
     // graph PoP
