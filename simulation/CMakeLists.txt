@@ -39,6 +39,11 @@ qt_add_qml_module(appWeatherStation
     QML_FILES Main.qml
 )
 
+target_compile_definitions(appWeatherStation
+    PRIVATE
+    SIMULATION
+)
+
 set_target_properties(appWeatherStation PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
