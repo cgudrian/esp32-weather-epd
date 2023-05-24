@@ -465,7 +465,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // indoor humidity
   display.setFont(&FONT_12pt8b);
-  if (!isnan(inHumidity))
+  if (!std::isnan(inHumidity))
   {
     dataStr = String(static_cast<int>(round(inHumidity)));
   }
