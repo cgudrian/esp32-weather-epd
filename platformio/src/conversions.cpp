@@ -53,18 +53,3 @@ float hectopascals_to_poundspersquareinch(float hectopascals)
 {
   return hectopascals * 0.0145f;
 } // end hectopascals_to_poundspersquareinch
-
-float meters_to_kilometers(float meters)
-{
-  return meters * 0.001f;
-} // end meters_to_kilometers
-
-float meters_to_miles(float meters)
-{
-  return meters * 6.214e-4f;
-} // end meters_to_miles
-
-float meters_to_feet(float meters)
-{
-  return meters * 3.281f;
-} // end meters_to_feet
