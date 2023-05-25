@@ -217,11 +217,8 @@ void initDisplay()
 #endif
 } // end initDisplay
 
-void drawSunrise(const owm_current_t &current)
+void drawSunrise(int x, int y, const owm_current_t &current)
 {
-  int x = 0;
-  int y = 204 + (48 + 8) * 0;
-
   time_t ts = current.sunrise;
   tm *timeInfo = localtime(&ts);
   char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
@@ -233,11 +230,8 @@ void drawSunrise(const owm_current_t &current)
   drawString(x + 48, y + 17 / 2 + 48 / 2, timeBuffer, LEFT);
 }
 
-void drawWind(const owm_current_t &current)
+void drawWind(int x, int y, const owm_current_t &current)
 {
-  int x = 0;
-  int y = 204 + (48 + 8) * 1;
-
   display.drawInvertedBitmap(x, y, wi_strong_wind_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_WIND, LEFT);
@@ -253,11 +247,8 @@ void drawWind(const owm_current_t &current)
   drawString(display.getCursorX(), y + 17 / 2 + 48 / 2, SpeedUnit::symbol, LEFT);
 }
 
-void drawUVIndex(const owm_current_t &current, int sp)
+void drawUVIndex(int x, int y, const owm_current_t &current, int sp)
 {
-  int x = 0;
-  int y = 204 + (48 + 8) * 2;
-
   display.drawInvertedBitmap(x, y, wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_UV_INDEX, LEFT);
@@ -286,11 +277,8 @@ void drawUVIndex(const owm_current_t &current, int sp)
   }
 }
 
-void drawAQI(const owm_resp_air_pollution_t &owm_air_pollution, int sp)
+void drawAQI(int x, int y, const owm_resp_air_pollution_t &owm_air_pollution, int sp)
 {
-  int x = 0;
-  int y = 204 + (48 + 8) * 3;
-
   display.drawInvertedBitmap(x, y, air_filter_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_AIR_QUALITY_INDEX, LEFT);
@@ -319,11 +307,8 @@ void drawAQI(const owm_resp_air_pollution_t &owm_air_pollution, int sp)
   }
 }
 
-void drawIndoorTemperature(const std::optional<Quantity<TemperatureUnit>> &inTemp)
+void drawIndoorTemperature(int x, int y, const std::optional<Quantity<TemperatureUnit>> &inTemp)
 {
-  int x = 0;
-  int y = 204 + (48 + 8) * 4;
-
   display.drawInvertedBitmap(x, y, house_thermometer_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_INDOOR_TEMPERATURE, LEFT);
@@ -333,11 +318,8 @@ void drawIndoorTemperature(const std::optional<Quantity<TemperatureUnit>> &inTem
   drawString(x + 48, y + 17 / 2 + 48 / 2, dataStr, LEFT);
 }
 
-void drawSunset(const owm_current_t &current)
+void drawSunset(int x, int y, const owm_current_t &current)
 {
-  int x = 170;
-  int y = 204 + (48 + 8) * 0;
-
   time_t ts = current.sunset;
   tm *timeInfo = localtime(&ts);
   char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
@@ -349,11 +331,8 @@ void drawSunset(const owm_current_t &current)
   drawString(x + 48, y + 17 / 2 + 48 / 2, timeBuffer, LEFT);
 }
 
-void drawHumidity(const owm_current_t &current)
+void drawHumidity(int x, int y, const owm_current_t &current)
 {
-  int x = 170;
-  int y = 204 + (48 + 8) * 1;
-
   display.drawInvertedBitmap(x, y, wi_humidity_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_HUMIDITY, LEFT);
@@ -363,11 +342,8 @@ void drawHumidity(const owm_current_t &current)
   drawString(display.getCursorX(), y + 17 / 2 + 48 / 2, "%", LEFT);
 }
 
-void drawPressure(const owm_current_t &current)
+void drawPressure(int x, int y, const owm_current_t &current)
 {
-  int x = 170;
-  int y = 204 + (48 + 8) * 2;
-
   display.drawInvertedBitmap(x, y, wi_barometer_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_PRESSURE, LEFT);
@@ -410,11 +386,8 @@ void drawPressure(const owm_current_t &current)
   drawString(display.getCursorX(), y + 17 / 2 + 48 / 2, unitStr, LEFT);
 }
 
-void drawVisibility(const owm_current_t &current)
+void drawVisibility(int x, int y, const owm_current_t &current)
 {
-  int x = 170;
-  int y = 204 + (48 + 8) * 3;
-
   display.drawInvertedBitmap(x, y, visibility_icon_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_VISIBILITY, LEFT);
@@ -437,11 +410,8 @@ void drawVisibility(const owm_current_t &current)
   drawString(display.getCursorX(), y + 17 / 2 + 48 / 2, unitStr, LEFT);
 }
 
-void drawIndoorHumidity(const std::optional<float> &inHumidity)
+void drawIndoorHumidity(int x, int y, const std::optional<float> &inHumidity)
 {
-  int x = 170;
-  int y = 204 + (48 + 8) * 4;
-
   display.drawInvertedBitmap(x, y, house_humidity_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(x + 48, y + 10, TXT_INDOOR_HUMIDITY, LEFT);
@@ -489,16 +459,16 @@ void drawCurrentConditions(const owm_current_t &current,
   // line dividing top and bottom display areas
   // display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
-  drawSunrise(current);
-  drawWind(current);
-  drawUVIndex(current, 8);
-  drawAQI(owm_air_pollution, 8);
-  drawIndoorTemperature(inTemp);
-  drawSunset(current);
-  drawHumidity(current);
-  drawPressure(current);
-  drawVisibility(current);
-  drawIndoorHumidity(inHumidity);
+  drawSunrise(0, 204 + (48 + 8) * 0, current);
+  drawWind(0, 204 + (48 + 8) * 1, current);
+  drawUVIndex(0, 204 + (48 + 8) * 2, current, 8);
+  drawAQI(0, 204 + (48 + 8) * 3, owm_air_pollution, 8);
+  drawIndoorTemperature(0, 204 + (48 + 8) * 4, inTemp);
+  drawSunset(170, 204 + (48 + 8) * 0, current);
+  drawHumidity(170, 204 + (48 + 8) * 1, current);
+  drawPressure(170, 204 + (48 + 8) * 2, current);
+  drawVisibility(170, 204 + (48 + 8) * 3, current);
+  drawIndoorHumidity(170, 204 + (48 + 8) * 4, inHumidity);
 }
 
 /* This function is responsible for drawing the five day forecast.
