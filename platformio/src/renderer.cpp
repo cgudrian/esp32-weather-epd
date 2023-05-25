@@ -217,8 +217,12 @@ void initDisplay()
 #endif
 } // end initDisplay
 
-void drawSunrise(const char *timeBuffer)
+void drawSunrise(const owm_current_t &current)
 {
+  time_t ts = current.sunrise;
+  tm *timeInfo = localtime(&ts);
+  char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
+  _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 0, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(48, 204 + 10 + (48 + 8) * 0, TXT_SUNRISE, LEFT);
@@ -314,8 +318,12 @@ void drawIndoorTemperature(const std::optional<Quantity<TemperatureUnit>> &inTem
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 }
 
-void drawSunset(const char *timeBuffer)
+void drawSunset(const owm_current_t &current)
 {
+  time_t ts = current.sunset;
+  tm *timeInfo = localtime(&ts);
+  char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
+  _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 0, wi_sunset_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 0, TXT_SUNSET, LEFT);
@@ -422,19 +430,23 @@ void drawIndoorHumidity(float inHumidity)
 /* This function is responsible for drawing the current conditions and
  * associated icons.
  */
-void drawCurrentConditions(const owm_current_t &current, const owm_daily_t &today,
+void drawCurrentConditions(const owm_current_t &current,
+                           const owm_daily_t &today,
                            const owm_resp_air_pollution_t &owm_air_pollution,
-                           const std::optional<Quantity<TemperatureUnit>>& inTemp, float inHumidity)
+                           const std::optional<Quantity<TemperatureUnit>> &inTemp,
+                           float inHumidity)
 {
-  String dataStr, unitStr;
   // current weather icon
-  display.drawInvertedBitmap(0, 0,
+  display.drawInvertedBitmap(0,
+                             0,
                              getCurrentConditionsBitmap196(current, today),
-                             196, 196, GxEPD_BLACK);
+                             196,
+                             196,
+                             GxEPD_BLACK);
 
   // current temp
-  dataStr = String(static_cast<int>(round(current.temp.in<TemperatureUnit>())));
-  unitStr = TemperatureUnit::symbol;
+  auto dataStr = String(static_cast<int>(round(current.temp.in<TemperatureUnit>())));
+  auto unitStr = TemperatureUnit::symbol;
   // FONT_**_temperature fonts only have the character set used for displaying
   // temperature (0123456789.-\xB0)
   display.setFont(&FONT_48pt8b_temperature);
@@ -452,31 +464,17 @@ void drawCurrentConditions(const owm_current_t &current, const owm_daily_t &toda
   // line dividing top and bottom display areas
   // display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
-  // uv and air quality indices
-  // spacing between end of index value and start of descriptor text
-  const int sp = 8;
-
-  time_t ts = current.sunrise;
-  tm *timeInfo = localtime(&ts);
-  char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
-  _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawSunrise(timeBuffer);
+  drawSunrise(current);
   drawWind(current);
-  drawUVIndex(current, sp);
-  drawAQI(owm_air_pollution, sp);
+  drawUVIndex(current, 8);
+  drawAQI(owm_air_pollution, 8);
   drawIndoorTemperature(inTemp);
-
-  memset(timeBuffer, '\0', sizeof(timeBuffer));
-  ts = current.sunset;
-  timeInfo = localtime(&ts);
-  _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawSunset(timeBuffer);
-
+  drawSunset(current);
   drawHumidity(current);
   drawPressure(current);
   drawVisibility(current);
   drawIndoorHumidity(inHumidity);
-} // end drawCurrentConditions
+}
 
 /* This function is responsible for drawing the five day forecast.
  */
