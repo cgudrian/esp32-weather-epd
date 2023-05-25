@@ -410,18 +410,13 @@ void drawVisibility(const owm_current_t &current)
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, unitStr, LEFT);
 }
 
-void drawIndoorHumidity(float inHumidity)
+void drawIndoorHumidity(const std::optional<float> &inHumidity)
 {
-  String dataStr;
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 4, house_humidity_48x48, 48, 48, GxEPD_BLACK);
   display.setFont(&FONT_7pt8b);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_HUMIDITY, LEFT);
   display.setFont(&FONT_12pt8b);
-  if (!std::isnan(inHumidity)) {
-    dataStr = String(static_cast<int>(round(inHumidity)));
-  } else {
-    dataStr = "--";
-  }
+  auto dataStr = inHumidity ? String(static_cast<int>(round(*inHumidity))) : String("--");
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "%", LEFT);
@@ -434,7 +429,7 @@ void drawCurrentConditions(const owm_current_t &current,
                            const owm_daily_t &today,
                            const owm_resp_air_pollution_t &owm_air_pollution,
                            const std::optional<Quantity<TemperatureUnit>> &inTemp,
-                           float inHumidity)
+                           const std::optional<float> &inHumidity)
 {
   // current weather icon
   display.drawInvertedBitmap(0,

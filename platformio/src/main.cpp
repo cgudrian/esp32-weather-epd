@@ -297,7 +297,9 @@ void setup()
   do
   {
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0],
-                          owm_air_pollution, inTemp, inHumidity);
+                          owm_air_pollution, 
+                          isnan(inTemp) ? std::nullopt : std::optional{inTemp}, 
+                          isnan(inHumidity) ? std::nullopt : std::optional{inHumidity});
     drawForecast(owm_onecall.daily, timeInfo);
     drawLocationDate(CITY_STRING, dateStr);
     drawOutlookGraph(owm_onecall.hourly, timeInfo);

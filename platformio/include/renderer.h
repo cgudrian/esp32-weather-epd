@@ -57,9 +57,11 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
                        uint16_t max_width, uint16_t max_lines, 
                        int16_t line_spacing, uint16_t color=GxEPD_BLACK);
 void initDisplay();
-void drawCurrentConditions(const owm_current_t &current, const owm_daily_t &today,
+void drawCurrentConditions(const owm_current_t &current,
+                           const owm_daily_t &today,
                            const owm_resp_air_pollution_t &owm_air_pollution,
-                           const std::optional<Quantity<TemperatureUnit> > &inTemp, float inHumidity);
+                           const std::optional<Quantity<TemperatureUnit>> &inTemp,
+                           const std::optional<float> &inHumidity);
 void drawForecast(owm_daily_t *const daily, tm timeInfo);
 void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);
