@@ -422,6 +422,35 @@ void drawIndoorHumidity(int x, int y, const std::optional<float> &inHumidity)
   drawString(display.getCursorX(), y + 17 / 2 + 48 / 2, "%", LEFT);
 }
 
+namespace G {
+class Sunrise
+{
+  public:
+  Sunrise(time_t time)
+      : x(0)
+      , y(0)
+      , time(time)
+  {}
+
+  void draw()
+  {
+    tm *timeInfo = localtime(&time);
+    char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
+    _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
+    display.drawInvertedBitmap(x, y, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
+    display.setFont(&FONT_7pt8b);
+    drawString(x + 48, y + 10, TXT_SUNRISE, LEFT);
+    display.setFont(&FONT_12pt8b);
+    drawString(x + 48, y + 17 / 2 + 48 / 2, timeBuffer, LEFT);
+  }
+
+  private:
+  int x;
+  int y;
+  time_t time;
+};
+} // namespace G
+
 template<int dx, int dy>
 void drawDataGrid(int x,
                   int y,
