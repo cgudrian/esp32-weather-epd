@@ -430,16 +430,23 @@ void drawDataGrid(int x,
                   const std::optional<Quantity<TemperatureUnit>> &inTemp,
                   const std::optional<float> &inHumidity)
 {
-  drawSunrise(x + dx * 0, y + dy * 0, current);
-  drawWind(x + dx * 0, y + dy * 1, current);
-  drawUVIndex(x + dx * 0, y + dy * 2, current, 8);
-  drawAQI(x + dx * 0, y + dy * 3, owm_air_pollution, 8);
-  drawIndoorTemperature(x + 0, y + dy * 4, inTemp);
-  drawSunset(x + dx * 1, y + dy * 0, current);
-  drawHumidity(x + dx * 1, y + dy * 1, current);
-  drawPressure(x + dx * 1, y + dy * 2, current);
-  drawVisibility(x + dx * 1, y + dy * 3, current);
-  drawIndoorHumidity(x + dx * 1, y + dy * 4, inHumidity);
+  int row = 0;
+  int col = 0;
+
+  drawSunrise(x + dx * col, y + dy * row++, current);
+  drawWind(x + dx * col, y + dy * row++, current);
+  drawUVIndex(x + dx * col, y + dy * row++, current, 8);
+  drawAQI(x + dx * col, y + dy * row++, owm_air_pollution, 8);
+  drawIndoorTemperature(x + col, y + dy * row++, inTemp);
+
+  col++;
+  row = 0;
+
+  drawSunset(x + dx * col, y + dy * row++, current);
+  drawHumidity(x + dx * col, y + dy * row++, current);
+  drawPressure(x + dx * col, y + dy * row++, current);
+  drawVisibility(x + dx * col, y + dy * row++, current);
+  drawIndoorHumidity(x + dx * col, y + dy * row++, inHumidity);
 }
 
 /* This function is responsible for drawing the current conditions and
