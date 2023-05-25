@@ -73,7 +73,7 @@ public:
         return b.constData();
     }
 
-    bool endsWith(const char *suffix) { return s.endsWith(QString::fromLatin1(suffix)); }
+    bool endsWith(const char *suffix) const { return s.endsWith(QString::fromLatin1(suffix)); }
 
     bool isEmpty() const { return s.isEmpty(); }
 

@@ -338,7 +338,7 @@ const char *getUVIdesc(unsigned int uvi)
  *
  * hours must be a positive integer
  */
-float getAvgConc(float pollutant[], int hours)
+float getAvgConc(const float pollutant[], int hours)
 {
   float avg = 0;
   // index (OWM_NUM_AIR_POLLUTION - 1) is most recent hourly concentration
@@ -356,7 +356,7 @@ float getAvgConc(float pollutant[], int hours)
 /* Returns the aqi for the given AQI and the selected AQI scale(defined in 
  * config.h)
  */
-int getAQI(owm_resp_air_pollution_t &p)
+int getAQI(const owm_resp_air_pollution_t &p)
 {
 #ifdef AUSTRALIA_AQI
   float co_8h     = getAvgConc(p.components.co,     8);
@@ -703,8 +703,8 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
-const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current, 
-                                             owm_daily_t   &today)
+const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
+                                             const owm_daily_t   &today)
 {
   int id = current.weather.id;
   // OpenWeatherMap indicates sun is up with d otherwise n for night
