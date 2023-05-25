@@ -422,6 +422,28 @@ void drawIndoorHumidity(int x, int y, const std::optional<float> &inHumidity)
   drawString(display.getCursorX(), y + 17 / 2 + 48 / 2, "%", LEFT);
 }
 
+void drawDataGrid(int x,
+                  int y,
+                  const owm_current_t &current,
+                  const owm_resp_air_pollution_t &owm_air_pollution,
+                  const std::optional<Quantity<TemperatureUnit>> &inTemp,
+                  const std::optional<float> &inHumidity)
+{
+  static constexpr auto X_SPACING = 170;
+  static constexpr auto Y_SPACING = 48 + 8;
+
+  drawSunrise(x + X_SPACING * 0, y + Y_SPACING * 0, current);
+  drawWind(x + X_SPACING * 0, y + Y_SPACING * 1, current);
+  drawUVIndex(x + X_SPACING * 0, y + Y_SPACING * 2, current, 8);
+  drawAQI(x + X_SPACING * 0, y + Y_SPACING * 3, owm_air_pollution, 8);
+  drawIndoorTemperature(x + 0, y + Y_SPACING * 4, inTemp);
+  drawSunset(x + X_SPACING * 1, y + Y_SPACING * 0, current);
+  drawHumidity(x + X_SPACING * 1, y + Y_SPACING * 1, current);
+  drawPressure(x + X_SPACING * 1, y + Y_SPACING * 2, current);
+  drawVisibility(x + X_SPACING * 1, y + Y_SPACING * 3, current);
+  drawIndoorHumidity(x + X_SPACING * 1, y + Y_SPACING * 4, inHumidity);
+}
+
 /* This function is responsible for drawing the current conditions and
  * associated icons.
  */
@@ -459,16 +481,7 @@ void drawCurrentConditions(const owm_current_t &current,
   // line dividing top and bottom display areas
   // display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
-  drawSunrise(0, 204 + (48 + 8) * 0, current);
-  drawWind(0, 204 + (48 + 8) * 1, current);
-  drawUVIndex(0, 204 + (48 + 8) * 2, current, 8);
-  drawAQI(0, 204 + (48 + 8) * 3, owm_air_pollution, 8);
-  drawIndoorTemperature(0, 204 + (48 + 8) * 4, inTemp);
-  drawSunset(170, 204 + (48 + 8) * 0, current);
-  drawHumidity(170, 204 + (48 + 8) * 1, current);
-  drawPressure(170, 204 + (48 + 8) * 2, current);
-  drawVisibility(170, 204 + (48 + 8) * 3, current);
-  drawIndoorHumidity(170, 204 + (48 + 8) * 4, inHumidity);
+  drawDataGrid(0, 204, current, owm_air_pollution, inTemp, inHumidity);
 }
 
 /* This function is responsible for drawing the five day forecast.
