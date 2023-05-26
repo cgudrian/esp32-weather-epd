@@ -559,7 +559,7 @@ const uint8_t *getWiFiBitmap16(int rssi)
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
-const uint8_t *getForecastBitmap64(owm_daily_t &daily)
+const uint8_t *getForecastBitmap64(const owm_daily_t &daily)
 {
   int id = daily.weather.id;
   // always using the day icon for weather forecast

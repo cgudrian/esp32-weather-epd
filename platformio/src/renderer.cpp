@@ -518,37 +518,37 @@ void drawCurrentConditions(const owm_current_t &current,
   drawDataGrid<170, 48 + 8>(0, 204, current, owm_air_pollution, inTemp, inHumidity);
 }
 
+void drawForecastForDay(const owm_daily_t& day, tm timeInfo, int x)
+{
+  // icons
+  display.drawInvertedBitmap(x, 98 + 69 / 2 - 32 - 6,
+                             getForecastBitmap64(day),
+                             64, 64, GxEPD_BLACK);
+  // day of week label
+  display.setFont(&FONT_11pt8b);
+  char dayBuffer[8] = {};
+  _strftime(dayBuffer, sizeof(dayBuffer), "%a", &timeInfo); // abbrv'd day
+  drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
+
+  // high | low
+  display.setFont(&FONT_8pt8b);
+  drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
+  auto hiStr = String(static_cast<int>(round(day.temp.max.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
+  auto loStr = String(static_cast<int>(round(day.temp.min.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
+  drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
+  drawString(x + 31 + 8, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
+}
+
 /* This function is responsible for drawing the five day forecast.
  */
 void drawForecast(owm_daily_t *const daily, tm timeInfo)
 {
-  // 5 day, forecast
-  String hiStr, loStr;
-  for (int i = 0; i < 5; ++i)
-  {
+  for (int i = 0; i < 5; ++i) {
     int x = 398 + (i * 82);
-    // icons
-    display.drawInvertedBitmap(x, 98 + 69 / 2 - 32 - 6,
-                               getForecastBitmap64(daily[i]),
-                               64, 64, GxEPD_BLACK);
-    // day of week label
-    display.setFont(&FONT_11pt8b);
-    char dayBuffer[8] = {};
-    _strftime(dayBuffer, sizeof(dayBuffer), "%a", &timeInfo); // abbrv'd day
-    drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
+    drawForecastForDay(daily[i], timeInfo, x);
     timeInfo.tm_wday = (timeInfo.tm_wday + 1) % 7; // increment to next day
-
-    // high | low
-    display.setFont(&FONT_8pt8b);
-    drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
-    hiStr = String(static_cast<int>(round(daily[i].temp.max.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
-    loStr = String(static_cast<int>(round(daily[i].temp.min.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
-    drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
-    drawString(x + 31 + 8, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
   }
-
-  return;
-} // end drawForecast
+}
 
 /* This function is responsible for drawing the current alerts if any.
  * Up to 2 alerts can be drawn.
