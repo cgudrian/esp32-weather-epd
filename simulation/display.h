@@ -5,32 +5,12 @@
 #include <cstdint>
 
 #include <Arduino.h>
+#include <gfxfont.h>
 
 extern const unsigned char AdafruitDefaultFont[];
 
 static constexpr auto GxEPD_BLACK = 1;
 static constexpr auto GxEPD_RED = 2;
-
-/// Font data stored PER GLYPH
-typedef struct
-{
-    uint16_t bitmapOffset; ///< Pointer into GFXfont->bitmap
-    uint8_t width;         ///< Bitmap dimensions in pixels
-    uint8_t height;        ///< Bitmap dimensions in pixels
-    uint8_t xAdvance;      ///< Distance to advance cursor (x axis)
-    int8_t xOffset;        ///< X dist from cursor pos to UL corner
-    int8_t yOffset;        ///< Y dist from cursor pos to UL corner
-} GFXglyph;
-
-/// Data stored for FONT AS A WHOLE
-typedef struct
-{
-    uint8_t *bitmap;  ///< Glyph bitmaps, concatenated
-    GFXglyph *glyph;  ///< Glyph array
-    uint16_t first;   ///< ASCII extents (first char)
-    uint16_t last;    ///< ASCII extents (last char)
-    uint8_t yAdvance; ///< Newline distance (y axis)
-} GFXfont;
 
 class Display
 {
@@ -72,6 +52,7 @@ public:
     void setCursor(int x, int y);
     void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
     void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+    void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
     void setTextColor(int color);
     int16_t getCursorX(void) const;
     QImage image() const;

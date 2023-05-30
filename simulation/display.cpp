@@ -426,6 +426,14 @@ void Display::writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t
     }
 }
 
+void Display::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+{
+    drawHLine(x, y, w, color);
+    drawHLine(x, y + h - 1, w, color);
+    drawVLine(x, y, h, color);
+    drawVLine(x + w - 1, y, h, color);
+}
+
 void Display::setTextColor(int color)
 {
     textcolor = color;

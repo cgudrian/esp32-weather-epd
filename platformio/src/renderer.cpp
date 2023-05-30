@@ -531,12 +531,13 @@ void drawForecastForDay(const owm_daily_t& day, tm timeInfo, int x)
   drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
 
   // high | low
-  display.setFont(&FONT_8pt8b);
-  drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
+
   auto hiStr = String(static_cast<int>(round(day.temp.max.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
   auto loStr = String(static_cast<int>(round(day.temp.min.in<TemperatureUnit>()))) + TemperatureUnit::shortSym;
+  display.setFont(&FONT_8pt8b);
   drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
   drawString(x + 31 + 8, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
+  drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
 }
 
 /* This function is responsible for drawing the five day forecast.

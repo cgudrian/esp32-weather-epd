@@ -2,6 +2,7 @@
 
 #include "display_utils.h"
 #include "renderer.h"
+#include "FreeSans.h"
 
 #include <QEventLoop>
 #include <QJsonArray>
@@ -11,6 +12,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QTimer>
+#include <widgets.h>
 
 owm_resp_onecall_t parseOneCallResponse(const QJsonDocument &doc)
 {
@@ -177,6 +179,15 @@ QImage DisplayImageProvider::requestImage(const QString &id, QSize *size, const 
     String dateStr;
     getDateStr(dateStr, timeInfo);
 
+#if 1
+    W::Font mediumSizedFont{.gfxFont = FONT_16pt8b, .ascent = 15, .descent = 2};
+    W::Window w{800, 480};
+    W::Text t1;
+    w << t1.text("Hagen").font(mediumSizedFont);
+
+    W::DisplayPainter painter(display);
+    w.paint(painter);
+#else
     drawCurrentConditions(owm_onecall.current,
                           owm_onecall.daily[0],
                           owm_air_pollution,
@@ -187,7 +198,7 @@ QImage DisplayImageProvider::requestImage(const QString &id, QSize *size, const 
     drawOutlookGraph(owm_onecall.hourly, *timeInfo);
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
-
+#endif
     auto image = display.image();
     *size = image.size();
     return image;

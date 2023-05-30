@@ -30,6 +30,7 @@
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
+#include "widgets.h"
 
 // too large to allocate locally on stack
 static owm_resp_onecall_t       owm_onecall;
@@ -291,6 +292,12 @@ void setup()
 
   String dateStr;
   getDateStr(dateStr, &timeInfo);
+
+  W::Window w(800, 480);
+  w << W::Text().text("Hallo");
+
+  W::DisplayPainter painter(display);
+  w.paint(painter);
 
   // RENDER FULL REFRESH
   initDisplay();

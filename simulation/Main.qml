@@ -8,6 +8,22 @@ Window {
     title: qsTr("Hello World")
     color: "white"
 
+    Text {
+        id: t1
+        text: "Hallojq\nWelt"
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.width: 1
+        }
+    }
+
+    Text {
+        x: t1.x + t1.advance.width
+        y: t1.y + t1.advance.height
+        text: "Superduper"
+    }
+
     Rectangle {
         id: rect
         anchors.centerIn: parent
